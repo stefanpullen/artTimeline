@@ -278,9 +278,7 @@
 		background-color: black;
 	}
 
-	button:hover + #end {
-		display: block;
-	}
+
 	button:hover + #start {
 		display: block;
 	}
