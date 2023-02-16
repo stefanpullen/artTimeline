@@ -1,9 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
 	import rough from 'roughjs';
-	import { draw, fade, fly, slide, blur, scale } from 'svelte/transition';
+	import { draw,fly, } from 'svelte/transition';
 	import { scaleLinear, max, min, ascending } from 'd3';
-	import { cubicOut, quadIn, quadOut, cubicIn, quadInOut, cubicInOut, linear } from 'svelte/easing';
+	import { cubicOut,cubicIn,  cubicInOut,  } from 'svelte/easing';
 	import { reverse } from 'svg-path-reverse';
 	import { typewriter } from './typewriter';
 
@@ -118,14 +118,13 @@
 	on:click={toggle}
 	on:keydown={handleKeyDown}
 >
-	<text class="title" y={margin.top / 4} x={width / 2}> Modern Art Movements</text>
+	<text class="title" y={margin.top / 4} x={width / 2}>Modern Art Movements</text>
 	{#if !visible}
 		<path
 			d={startButton}
 			stroke="black"
 			stroke-width="3"
 			fill="black"
-			transform="rotate(180deg)"
 			out:fly={{
 				y: height/2,
 				duration: 1500,
@@ -177,13 +176,13 @@
 			y={height - margin.bottom}
 			x={width / 2 - 12}
 			in:fly={{
-				x: 10,
+				x: 15,
 				duration: 1500,
 				delay: 4000,
 				easing: cubicOut
 			}}
 			out:fly={{
-				x: 10,
+				x: 15,
 				duration: 1500,
 				easing: cubicIn
 			}}
@@ -255,7 +254,6 @@
 					x: i % 2 == 0 ? width * 0.2 : width * -0.2,
 					duration: 1500,
 					delay: 500,
-
 					easing: cubicIn
 				}}
 				>{d.name}
