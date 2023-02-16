@@ -121,6 +121,7 @@
 	{#if !visible}
 		<path
 			d={startButton}
+			id="start-button"
 			stroke="black"
 			stroke-width="3"
 			fill="black"
@@ -154,7 +155,7 @@
 			class="text"
 			id="start"
 			x={margin.left}
-			y={height / 2 -7}
+			y={height / 2 - 7}
 			in:fly={{
 				y: 10,
 				duration: 1500,
@@ -250,7 +251,7 @@
 					easing: cubicOut
 				}}
 				out:fly={{
-					y: i % 2 == 0 ? height * -0.2 : height *0.2,
+					y: i % 2 == 0 ? height * -0.2 : height * 0.2,
 					duration: 1500,
 					delay: 500,
 					easing: cubicIn
@@ -304,7 +305,17 @@
 		stroke: #eeeeee;
 		stroke-width: 2;
 	}
+	#start-button {
+		cursor: pointer;
+		transition: opacity 1s ease-in-out;
+	}
+	#start-button:hover {
+		fill: #eeeeee;
+	}
+	#start-button:active {
+		fill: #eeeeee;
 
+	}
 	.label_year {
 		font-weight: 1000;
 		baseline-shift: -4;
@@ -331,7 +342,7 @@
 		writing-mode: vertical-rl;
 		text-orientation: upright;
 	}
-	
+
 	.text {
 		font-weight: 1000;
 		position: absolute;
