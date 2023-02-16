@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import rough from 'roughjs';
-	import { draw, fade, fly, slide } from 'svelte/transition';
+	import { draw, fade, fly, slide, blur, scale } from 'svelte/transition';
 	import { scaleLinear, max, min, ascending } from 'd3';
 	import { cubicOut, quadIn, quadOut, cubicIn, quadInOut, cubicInOut, linear } from 'svelte/easing';
 	import { reverse } from 'svg-path-reverse';
@@ -9,15 +9,16 @@
 
 	export let artdat;
 
-	let svg, roughCanvas, path, pathArray;
+	let svg, roughCanvas, startButton;
 	let pathObjects = [];
 	let visible = false;
 	function toggle() {
 		visible = !visible;
 	}
-	let counter = 0;
-	function count() {
-		counter += 1;
+	function handleKeyDown(event) {
+		if (event.key === 'Enter') {
+			toggle();
+		}
 	}
 
 	$: roughness = 0.6;
@@ -45,6 +46,15 @@
 
 	onMount(() => {
 		roughCanvas = rough.svg(svg);
+		startButton = roughCanvas
+			.circle(width / 2, height / 2, 75, true, {
+				stroke: 'black',
+				fill: 'black',
+				roughness: roughness,
+				hachureGap: 5
+			})
+			.children[0].getAttribute('d');
+
 		pathObjects = artdat
 			.map((d, index) => {
 				const startPoint = xScale(d.start_date) + sizeScale(d.duration) / 2;
@@ -101,18 +111,45 @@
 	let delay2 = (i) => i * 150 + 7500;
 </script>
 
-<svg viewBox="0 0 {width} {height}" bind:this={svg} id="mysvg">
+<svg
+	viewBox="0 0 {width} {height}"
+	bind:this={svg}
+	id="mysvg"
+	on:click={toggle}
+	on:keydown={handleKeyDown}
+>
 	<text class="title" y={margin.top / 4} x={width / 2}> Modern Art Movements</text>
+	{#if !visible}
+		<path
+			d={startButton}
+			stroke="black"
+			stroke-width="3"
+			fill="black"
+			transform="rotate(180deg)"
+			out:fly={{
+				y: height/2,
+				duration: 1500,
+				easing: cubicIn
+			}}
+			in:fly={{
+				delay: 3000,
+				y: height/2,
+				duration: 1500,
+				easing: cubicOut
+			}}
+		/>
+	{/if}
 	{#if visible}
 		<path
 			d="M{width / 2} {margin.top} L{width / 2} {height - margin.bottom}"
 			stroke="black"
 			stroke-width="3"
 			id="one"
-			transition:draw={{ delay: 3000, duration: 1500, easing: cubicOut }}
+			in:draw={{ delay: 3000, duration: 1500, easing: cubicOut }}
+			out:draw={{ duration: 1500, easing: cubicIn }}
 		/>
 
-		<text class="name" y={margin.top / 2} x={width / 2} transition:typewriter
+		<text class="name" y={margin.top / 2} x={width / 2} in:typewriter 	
 			>A timeline by Stefan Pullen</text
 		>
 		<text
@@ -120,11 +157,16 @@
 			id="start"
 			y={margin.top}
 			x={width / 2 + 12}
-			transition:fly={{
+			in:fly={{
 				x: -15,
 				duration: 1500,
 				delay: 4000,
 				easing: cubicOut
+			}}
+			out:fly={{
+				x: -15,
+				duration: 1500,
+					easing: cubicIn
 			}}
 		>
 			1867</text
@@ -134,11 +176,16 @@
 			id="end"
 			y={height - margin.bottom}
 			x={width / 2 - 12}
-			transition:fly={{
+			in:fly={{
 				x: 10,
 				duration: 1500,
 				delay: 4000,
 				easing: cubicOut
+			}}
+			out:fly={{
+				x: 10,
+				duration: 1500,
+				easing: cubicIn
 			}}
 		>
 			1975</text
@@ -152,7 +199,7 @@
 				fill="none"
 				d={d.stroke}
 				in:draw={{ duration: 3000, delay: delay(i), speed: 0.5, easing: cubicOut }}
-				out:draw={{ duration: 3000, delay: delay(i), speed: 0.5, easing: cubicIn }}
+				out:draw={{ duration: 3000, speed: 0.5, easing: cubicIn }}
 			/>
 			<path
 				id="annotations-lines"
@@ -161,7 +208,7 @@
 				fill="none"
 				d={d.anotationLine}
 				in:draw={{ duration: 3000, delay: delay(i), speed: 0.5, easing: cubicOut }}
-				out:draw={{ duration: 3000, delay: delay(i), speed: 0.5, easing: cubicIn }}
+				out:draw={{ duration: 3000, speed: 0.5, easing: cubicIn }}
 			/>
 			<path
 				id="filling"
@@ -169,7 +216,8 @@
 				stroke-width="1"
 				fill="none"
 				d={d.path}
-				transition:draw={{ duration: 3000, delay: delay2(i), speed: 2, easing: cubicInOut }}
+				in:draw={{ duration: 3000, delay: delay2(i), speed: 2, easing: cubicInOut }}
+				out:draw={{ duration: 3000,  speed: 2, easing: cubicInOut }}
 			/>
 			<text
 				class="label"
@@ -177,11 +225,17 @@
 				Y={xScale(d.start)}
 				X={i % 2 == 0 ? width * 0.1 : width * 0.9}
 				text-anchor={i % 2 == 0 ? 'start' : 'end'}
-				transition:fly={{
+				in:fly={{
 					x: i % 2 == 0 ? width * -0.2 : width * 0.2,
-					duration: 3000,
+					duration: 1500,
 					delay: delay2(i),
 					easing: cubicOut
+				}}
+				out:fly={{
+					x: i % 2 == 0 ? width * -0.2 : width * 0.2,
+					duration: 1500,
+					delay: 500,
+					easing: cubicIn
 				}}
 			>
 				{d.name}
@@ -191,11 +245,18 @@
 				Y={xScale(d.start)}
 				X={i % 2 == 0 ? width * 0.1 : width * 0.9}
 				text-anchor={i % 2 == 0 ? 'start' : 'end'}
-				transition:fly={{
+				in:fly={{
 					x: i % 2 == 0 ? width * 0.2 : width * -0.2,
-					duration: 3000,
+					duration: 1500,
 					delay: delay2(i),
 					easing: cubicOut
+				}}
+				out:fly={{
+					x: i % 2 == 0 ? width * 0.2 : width * -0.2,
+					duration: 1500,
+					delay: 500,
+
+					easing: cubicIn
 				}}
 				>{d.name}
 			</text>
@@ -205,18 +266,24 @@
 				Y={xScale(d.start)}
 				X={i % 2 == 0 ? width * 0.1 : width * 0.9}
 				text-anchor={i % 2 == 0 ? 'start' : 'end'}
-				transition:fly={{
+				in:fly={{
 					x: i % 2 == 0 ? width * 0.2 : width * -0.2,
-					duration: 3000,
+					duration: 1500,
 					delay: delay2(i),
 					easing: cubicOut
+				}}
+				out:fly={{
+					x: i % 2 == 0 ? width * 0.2 : width * -0.2,
+					duration: 1500,
+					delay: 500,
+					easing: cubicIn
 				}}
 				>{d.start}
 			</text>
 		{/each}
 	{/if}
 </svg>
-<button top={margin.top} on:click={toggle} />
+<!-- <button top={margin.top} on:click={toggle}  /> -->
 
 <!-- <div class="text" id="start" >1867</div>
 <div class="text" id="end">1975</div> -->
@@ -230,7 +297,6 @@
 	}
 
 	.label {
-		font-family: Courier, monospace;
 		font-weight: 1000;
 		baseline-shift: 2;
 		font-size: 0.6em;
@@ -244,7 +310,6 @@
 	}
 
 	.label_year {
-		font-family: Courier, monospace;
 		font-weight: 1000;
 		baseline-shift: -8;
 		font-size: 0.6em;
@@ -254,20 +319,17 @@
 
 	.title {
 		text-anchor: middle;
-		font-family: Courier, monospace;
 		font-weight: 1000;
 		font-size: 1.4rem;
 		letter-spacing: 10.5px;
 	}
 	.name {
 		text-anchor: middle;
-		font-family: Courier, monospace;
 		font-weight: 1000;
 		font-size: 1rem;
 		letter-spacing: 6.5px;
 	}
 	.text {
-		font-family: Courier, monospace;
 		font-weight: 1000;
 		position: absolute;
 		background-color: none;
@@ -278,26 +340,5 @@
 
 	#end {
 		text-anchor: end;
-	}
-
-	button {
-		position: absolute;
-		left: 50%;
-		top: 12.1%;
-		transform: translatex(-50%);
-		display: block;
-		cursor: pointer;
-		transition: all 0.3s ease-in-out;
-		width: 0.5rem;
-		height: 0.5rem;
-		border-radius: 2rem;
-		background-color: black;
-	}
-
-	button:hover {
-		background-color: #eeeeee;
-	}
-	button:active {
-		background-color: black;
 	}
 </style>
