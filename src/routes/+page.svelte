@@ -3,8 +3,8 @@
 	import TimelineV1_mobile from '../lib/TimelineV1_mobile.svelte';
 	import DeviceDetector from 'svelte-device-detector';
 
-	export let data = {};
-	$: artdat = data.data;
+			export let data = {};
+			$: artdat = data.data;
 </script>
 
 <DeviceDetector showInDevice="desktop">

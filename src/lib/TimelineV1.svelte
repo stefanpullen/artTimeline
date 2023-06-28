@@ -107,7 +107,7 @@
 	});
 
 	let delay = (i) => i * 150 + 5250;
-	let delay2 = (i) => i * 150 + 7500;
+	let delay2 = (i) => i * 10 + 8000;
 </script>
 
 <svg
@@ -215,7 +215,7 @@
 				stroke-width="1"
 				fill="none"
 				d={d.path}
-				in:draw={{ duration: 3000, delay: delay2(i), speed: 2, easing: cubicInOut }}
+				in:draw={{ duration: 2000, delay: 8000, speed: 1, easing: cubicInOut }}
 				out:draw={{ duration: 3000, speed: 2, easing: cubicInOut }}
 			/>
 			<text

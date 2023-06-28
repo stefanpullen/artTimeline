@@ -55,7 +55,7 @@
 			})
 			.children[0].getAttribute('d');
 
-		pathObjects = artdat
+			pathObjects = artdat
 			.map((d, index) => {
 				const startPoint = xScale(d.start_date) + sizeScale(d.duration) / 2;
 				const path = roughCanvas.arc(
