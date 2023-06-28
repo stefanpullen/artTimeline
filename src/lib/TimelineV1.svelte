@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import rough from 'roughjs';
-	import { draw, fly } from 'svelte/transition';
+	import { draw, fly, fade } from 'svelte/transition';
 	import { scaleLinear, max, min, ascending } from 'd3';
 	import { cubicOut, cubicIn, cubicInOut } from 'svelte/easing';
 	import { reverse } from 'svg-path-reverse';
@@ -123,20 +123,18 @@
 			d={startButton}
 			id="start-button"
 			stroke="black"
-			stroke-width="3"
-			fill="black"
-			out:fly={{
-				x: width / 2,
-				duration: 1500,
-				easing: cubicIn
-			}}
-			in:fly={{
-				delay: 3000,
-				x: width / 2,
-				duration: 1500,
-				easing: cubicOut
-			}}
+			stroke-width="1"
+			fill="#eeeeee"
+			in:fade={{ delay: 3000, duration: 1500, easing: cubicOut }}
+			out:fade={{ duration: 500, easing: cubicIn }}
 		/>
+		<text
+			class="name2"
+			x={width / 2}
+			y={height / 2}
+			in:fade={{ delay: 3000, duration: 1500, easing: cubicOut }}
+			out:fade={{ duration: 500, easing: cubicIn }}>Start</text
+		>
 	{/if}
 
 	{#if visible}
@@ -145,7 +143,7 @@
 			stroke="black"
 			stroke-width="3"
 			id="one"
-			in:draw={{ delay: 3000, duration: 1500, easing: cubicOut }}
+			in:draw={{ duration: 1500, easing: cubicOut }}
 			out:draw={{ duration: 1500, easing: cubicIn }}
 		/>
 		<text class="name" x={margin.left / 2} y={height / 2} in:typewriter
@@ -310,11 +308,15 @@
 		transition: opacity 1s ease-in-out;
 	}
 	#start-button:hover {
-		fill: #eeeeee;
+		/* fill: black; */
+		stroke-width: 4px;
+		/* fill: #eeeeee; */
 	}
 	#start-button:active {
-		fill: #eeeeee;
+		stroke-width: 4px;
 
+		/* fill: #eeeeee; */
+		/* fill: black; */
 	}
 	.label_year {
 		font-weight: 1000;
@@ -328,6 +330,7 @@
 
 	.title {
 		text-anchor: middle;
+
 		letter-spacing: 3px;
 		font-weight: 1000;
 		font-size: 1.1rem;
@@ -341,6 +344,18 @@
 		letter-spacing: 0;
 		writing-mode: vertical-rl;
 		text-orientation: upright;
+	}
+	.name2 {
+		text-anchor: middle;
+		baseline-shift: -4;
+		font-weight: 1000;
+		font-size: 0.7rem;
+		letter-spacing: 0;
+		background: #ffffff;
+		letter-spacing: 1px;
+		font-weight: 1000;
+		font-size: 1.1rem;
+		pointer-events: none;
 	}
 
 	.text {

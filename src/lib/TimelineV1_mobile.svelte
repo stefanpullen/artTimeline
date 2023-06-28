@@ -1,9 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
 	import rough from 'roughjs';
-	import { draw,fly, } from 'svelte/transition';
+	import { draw, fly, fade } from 'svelte/transition';
 	import { scaleLinear, max, min, ascending } from 'd3';
-	import { cubicOut,cubicIn,  cubicInOut,  } from 'svelte/easing';
+	import { cubicOut, cubicIn, cubicInOut } from 'svelte/easing';
 	import { reverse } from 'svg-path-reverse';
 	import { typewriter } from './typewriter';
 
@@ -47,7 +47,7 @@
 	onMount(() => {
 		roughCanvas = rough.svg(svg);
 		startButton = roughCanvas
-			.circle(width / 2, height / 2, 75, true, {
+			.circle(width / 2, height / 2, 150, true, {
 				stroke: 'black',
 				fill: 'black',
 				roughness: roughness,
@@ -55,7 +55,7 @@
 			})
 			.children[0].getAttribute('d');
 
-			pathObjects = artdat
+		pathObjects = artdat
 			.map((d, index) => {
 				const startPoint = xScale(d.start_date) + sizeScale(d.duration) / 2;
 				const path = roughCanvas.arc(
@@ -108,7 +108,7 @@
 	});
 
 	let delay = (i) => i * 150 + 5250;
-	let delay2 = (i) => i * 150 + 7500;
+	let delay2 = (i) => i * 10 + 8000;
 </script>
 
 <svg
@@ -122,21 +122,20 @@
 	{#if !visible}
 		<path
 			d={startButton}
+			id="start-button"
 			stroke="black"
-			stroke-width="3"
-			fill="black"
-			out:fly={{
-				y: height/2,
-				duration: 1500,
-				easing: cubicIn
-			}}
-			in:fly={{
-				delay: 3000,
-				y: height/2,
-				duration: 1500,
-				easing: cubicOut
-			}}
+			stroke-width="1"
+			fill="#eeeeee"
+			in:fade={{ delay: 3000, duration: 1500, easing: cubicOut }}
+			out:fade={{ duration: 500, easing: cubicIn }}
 		/>
+		<text
+			class="name2"
+			x={width / 2}
+			y={height / 2}
+			in:fade={{ delay: 3000, duration: 1500, easing: cubicOut }}
+			out:fade={{ duration: 500, easing: cubicIn }}>Start</text
+		>
 	{/if}
 	{#if visible}
 		<path
@@ -148,7 +147,7 @@
 			out:draw={{ duration: 1500, easing: cubicIn }}
 		/>
 
-		<text class="name" y={margin.top / 2} x={width / 2} in:typewriter 	
+		<text class="name" y={margin.top / 2} x={width / 2} in:typewriter
 			>A timeline by Stefan Pullen</text
 		>
 		<text
@@ -165,7 +164,7 @@
 			out:fly={{
 				x: -15,
 				duration: 1500,
-					easing: cubicIn
+				easing: cubicIn
 			}}
 		>
 			1867</text
@@ -209,6 +208,7 @@
 				in:draw={{ duration: 3000, delay: delay(i), speed: 0.5, easing: cubicOut }}
 				out:draw={{ duration: 3000, speed: 0.5, easing: cubicIn }}
 			/>
+
 			<path
 				id="filling"
 				stroke="black"
@@ -216,7 +216,7 @@
 				fill="none"
 				d={d.path}
 				in:draw={{ duration: 3000, delay: delay2(i), speed: 2, easing: cubicInOut }}
-				out:draw={{ duration: 3000,  speed: 2, easing: cubicInOut }}
+				out:draw={{ duration: 3000, speed: 2, easing: cubicInOut }}
 			/>
 			<text
 				class="label"
@@ -326,6 +326,21 @@
 		font-weight: 1000;
 		font-size: 1rem;
 		letter-spacing: 6.5px;
+	}
+
+	.name2 {
+		text-anchor: middle;
+		/* baseline-shift: -4; */
+		font-weight: 1000;
+		font-size: 0.7rem;
+		letter-spacing: 0;
+		background: #ffffff;
+		letter-spacing: 1px;
+		font-weight: 1000;
+		font-size: 1.1rem;
+		pointer-events: none;
+		writing-mode: vertical-rl;
+		text-orientation: upright;
 	}
 	.text {
 		font-weight: 1000;
