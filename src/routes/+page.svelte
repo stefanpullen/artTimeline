@@ -7,6 +7,8 @@
 			$: artdat = data.data;
 </script>
 
+
+
 <DeviceDetector showInDevice="desktop">
 	<TimelineV1 {artdat} />
 </DeviceDetector>

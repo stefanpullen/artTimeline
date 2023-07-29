@@ -111,6 +111,8 @@
 	let delay2 = (i) => i * 10 + 8000;
 </script>
 
+<p><a href="https://www.stefanpullen.com">Stefan Pullen</a> ©2023</p>
+
 <svg
 	viewBox="0 0 {width} {height}"
 	bind:this={svg}
@@ -123,9 +125,9 @@
 		<path
 			d={startButton}
 			id="start-button"
-			stroke="black"
+			stroke="#44413c"
 			stroke-width="1"
-			fill="#eeeeee"
+			fill-opacity="0"
 			in:fade={{ delay: 3000, duration: 1500, easing: cubicOut }}
 			out:fade={{ duration: 500, easing: cubicIn }}
 		/>
@@ -140,7 +142,7 @@
 	{#if visible}
 		<path
 			d="M{width / 2} {margin.top} L{width / 2} {height - margin.bottom}"
-			stroke="black"
+			stroke="#44413c"
 			stroke-width="3"
 			id="one"
 			in:draw={{ delay: 3000, duration: 1500, easing: cubicOut }}
@@ -192,7 +194,7 @@
 		{#each pathObjects as d, i}
 			<path
 				id="stroke"
-				stroke="black"
+				stroke="#44413c"
 				stroke-width="1"
 				fill="none"
 				d={d.stroke}
@@ -201,7 +203,7 @@
 			/>
 			<path
 				id="annotations-lines"
-				stroke="black"
+				stroke="#44413c"
 				stroke-width="1"
 				fill="none"
 				d={d.anotationLine}
@@ -211,7 +213,7 @@
 
 			<path
 				id="filling"
-				stroke="black"
+				stroke="#44413c"
 				stroke-width="1"
 				fill="none"
 				d={d.path}
@@ -287,11 +289,12 @@
 <div class="text" id="end">1975</div> -->
 <style>
 	svg {
-		background: #eeeeee;
+		/* background: #eeeeee; */
 		position: relative;
 		display: block;
 		margin: 0 auto;
 		height: 90%;
+		/* border: 2px solid black; */
 	}
 
 	.label {
@@ -300,6 +303,8 @@
 		font-size: 0.6em;
 		text-transform: capitalize;
 		letter-spacing: 3px;
+		fill: #44413c
+
 	}
 
 	#back-label {
@@ -313,6 +318,8 @@
 		font-size: 0.6em;
 		text-transform: capitalize;
 		letter-spacing: 3px;
+		fill: #44413c
+
 	}
 
 	.title {
@@ -320,6 +327,8 @@
 		font-weight: 1000;
 		font-size: 1.4rem;
 		letter-spacing: 10.5px;
+		fill: #44413c
+
 	}
 	.name {
 		text-anchor: middle;
@@ -341,6 +350,8 @@
 		pointer-events: none;
 		writing-mode: vertical-rl;
 		text-orientation: upright;
+		fill: #44413c
+
 	}
 	.text {
 		font-weight: 1000;
@@ -349,9 +360,18 @@
 		font-size: 1rem;
 		writing-mode: vertical-rl;
 		text-orientation: upright;
+		fill: #44413c
 	}
 
 	#end {
 		text-anchor: end;
+	}
+
+	p {
+		color: #44413c;
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+		font-size: 0.8rem;
 	}
 </style>

@@ -110,6 +110,8 @@
 	let delay2 = (i) => i * 10 + 8000;
 </script>
 
+<p><a href="https://www.stefanpullen.com">Stefan Pullen</a> ©2023</p>
+
 <svg
 	viewBox="0 0 {width} {height}"
 	bind:this={svg}
@@ -124,7 +126,7 @@
 			id="start-button"
 			stroke="black"
 			stroke-width="1"
-			fill="#eeeeee"
+			fill-opacity=0
 			in:fade={{ delay: 3000, duration: 1500, easing: cubicOut }}
 			out:fade={{ duration: 500, easing: cubicIn }}
 		/>
@@ -140,7 +142,7 @@
 	{#if visible}
 		<path
 			d="M{margin.left} {height / 2} L{width - margin.right} {height / 2}"
-			stroke="black"
+			stroke="#44413c"
 			stroke-width="3"
 			id="one"
 			in:draw={{ duration: 1500, easing: cubicOut }}
@@ -191,8 +193,7 @@
 		{#each pathObjects as d, i}
 			<path
 				id="stroke"
-				stroke="black"
-				stroke-width="1"
+				stroke="#44413c"				stroke-width="1"
 				fill="none"
 				d={d.stroke}
 				in:draw={{ duration: 3000, delay: delay(i), speed: 0.5, easing: cubicOut }}
@@ -200,16 +201,16 @@
 			/>
 			<path
 				id="annotations-lines"
-				stroke="black"
 				stroke-width="1"
 				fill="none"
+				stroke="#44413c"
 				d={d.anotationLine}
 				in:draw={{ duration: 3000, delay: delay(i), speed: 0.5, easing: cubicOut }}
 				out:draw={{ duration: 3000, speed: 0.5, easing: cubicIn }}
 			/>
 			<path
 				id="filling"
-				stroke="black"
+				stroke="#44413c"
 				stroke-width="1"
 				fill="none"
 				d={d.path}
@@ -282,11 +283,13 @@
 
 <style>
 	svg {
-		background: #eeeeee;
+		/* background: #eeeeee; */
 		position: relative;
 		display: block;
 		margin: 0 auto;
 		width: 75%;
+
+
 	}
 
 	.label {
@@ -297,6 +300,7 @@
 		font-size: 0.6em;
 		letter-spacing: -2px;
 		text-transform: capitalize;
+		fill:"#44413c";
 	}
 
 	#back-label {
@@ -319,6 +323,7 @@
 		/* fill: black; */
 	}
 	.label_year {
+		fill:"#44413c";
 		font-weight: 1000;
 		baseline-shift: -4;
 		writing-mode: vertical-rl;
@@ -330,7 +335,7 @@
 
 	.title {
 		text-anchor: middle;
-
+	fill:"#44413c";
 		letter-spacing: 3px;
 		font-weight: 1000;
 		font-size: 1.1rem;
@@ -338,6 +343,8 @@
 		text-orientation: upright;
 	}
 	.name {
+
+		fill:"#44413c";
 		text-anchor: middle;
 		font-weight: 1000;
 		font-size: 0.7rem;
@@ -346,6 +353,7 @@
 		text-orientation: upright;
 	}
 	.name2 {
+		fill:"#44413c";
 		text-anchor: middle;
 		baseline-shift: -4;
 		font-weight: 1000;
@@ -359,6 +367,7 @@
 	}
 
 	.text {
+		fill:"#44413c";
 		font-weight: 1000;
 		position: absolute;
 		background-color: none;
@@ -366,5 +375,13 @@
 
 	#end {
 		text-anchor: end;
+	}
+	
+	p {
+		color: #44413c;
+		position: absolute;
+		right:10px;
+		bottom: 10px;
+		font-size: 0.8rem;
 	}
 </style>
